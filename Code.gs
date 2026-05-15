@@ -1,75 +1,33 @@
-const RECIPIENT_EMAIL = "shahrukhoffice.works@gmail.com";
-const EMAIL_SUBJECT = "New Website Enquiry - Frontier Education";
-
 function doPost(e) {
   try {
-    const data = parseRequestBody(e);
+    var data = JSON.parse(e.postData.contents);
 
-    validateRequiredFields(data);
+    var recipient = "shahrukhoffice.works@gmail.com";
+    var subject = "New Website Enquiry - Frontier Education";
 
-    const emailBody = [
-      "New enquiry submitted from the Frontier Education website.",
-      "",
-      "Full Name: " + cleanValue(data.fullName),
-      "Email: " + cleanValue(data.email),
-      "Phone: " + cleanValue(data.phone),
-      "Nationality: " + cleanValue(data.nationality),
-      "Preferred Course: " + cleanValue(data.course)
-    ].join("\n");
+    var body =
+      "New enquiry received from Frontier Education website:\n\n" +
+      "Full Name: " + data.fullName + "\n" +
+      "Email: " + data.email + "\n" +
+      "Phone: " + data.phone + "\n" +
+      "Nationality: " + data.nationality + "\n" +
+      "Preferred Course: " + data.course;
 
-    const mailOptions = {
-      to: RECIPIENT_EMAIL,
-      subject: EMAIL_SUBJECT,
-      body: emailBody,
-      name: "Frontier Education Enquiry"
-    };
+    MailApp.sendEmail(recipient, subject, body);
 
-    const replyTo = cleanValue(data.email);
-    if (replyTo) {
-      mailOptions.replyTo = replyTo;
-    }
-
-    MailApp.sendEmail(mailOptions);
-
-    return jsonResponse({
-      status: "success",
-      message: "Enquiry sent successfully."
-    });
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: "success",
+        message: "Email sent successfully"
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
-    return jsonResponse({
-      status: "error",
-      message: error && error.message ? error.message : "Unable to send enquiry."
-    });
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: "error",
+        message: error.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
-}
-
-function parseRequestBody(e) {
-  if (!e || !e.postData || !e.postData.contents) {
-    throw new Error("Missing request body.");
-  }
-
-  return JSON.parse(e.postData.contents);
-}
-
-function validateRequiredFields(data) {
-  const requiredFields = ["fullName", "email", "phone", "nationality", "course"];
-
-  const missingFields = requiredFields.filter(function(field) {
-    return !cleanValue(data[field]);
-  });
-
-  if (missingFields.length) {
-    throw new Error("Missing required fields: " + missingFields.join(", "));
-  }
-}
-
-function cleanValue(value) {
-  return String(value || "").replace(/\s+/g, " ").trim();
-}
-
-function jsonResponse(payload) {
-  return ContentService
-    .createTextOutput(JSON.stringify(payload))
-    .setMimeType(ContentService.MimeType.JSON);
 }
