@@ -4,12 +4,6 @@ const EMAIL_SUBJECT = "New Website Enquiry - Frontier Education";
 function doPost(e) {
   try {
     const data = parseRequestBody(e);
-    const submittedAt = new Date();
-    const submittedTime = Utilities.formatDate(
-      submittedAt,
-      Session.getScriptTimeZone(),
-      "yyyy-MM-dd HH:mm:ss"
-    );
 
     validateRequiredFields(data);
 
@@ -20,8 +14,7 @@ function doPost(e) {
       "Email: " + cleanValue(data.email),
       "Phone: " + cleanValue(data.phone),
       "Nationality: " + cleanValue(data.nationality),
-      "Preferred Course: " + cleanValue(data.course),
-      "Submitted Date & Time: " + submittedTime
+      "Preferred Course: " + cleanValue(data.course)
     ].join("\n");
 
     const mailOptions = {
@@ -42,6 +35,7 @@ function doPost(e) {
       status: "success",
       message: "Enquiry sent successfully."
     });
+
   } catch (error) {
     return jsonResponse({
       status: "error",
@@ -60,6 +54,7 @@ function parseRequestBody(e) {
 
 function validateRequiredFields(data) {
   const requiredFields = ["fullName", "email", "phone", "nationality", "course"];
+
   const missingFields = requiredFields.filter(function(field) {
     return !cleanValue(data[field]);
   });
