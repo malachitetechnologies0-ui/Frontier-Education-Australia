@@ -2,8 +2,8 @@ function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
 
-    var recipient = "shahrukhoffice.works@gmail.com";
-    var subject = "New Website Enquiry - Frontier Education";
+    var recipient = "frontierteam68@gmail.com";
+    var subject = "Enquiry Form- Frontier Education";
 
     var body =
       "New enquiry received from Frontier Education website:\n\n" +
