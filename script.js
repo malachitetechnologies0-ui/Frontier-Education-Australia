@@ -20,7 +20,7 @@
   const faqItems = [...document.querySelectorAll(".faq-item")];
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   // Paste your deployed Google Apps Script Web App URL below.
-  const GOOGLE_APPS_SCRIPT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmx74EMI7aByJ6xWVGX5ZcQeHaB8L8YlgzLUFi9IskKZfzxFZ48G13KELERTJNFnBQ/exec";
+  const GOOGLE_APPS_SCRIPT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx5enlnFnNgKN8uc8xYAolax5l0QwXny7J1kiweGU-7kjNFeJNh0ZMr4xOPQViYcsXN/exec";
   const formScriptUrl = GOOGLE_APPS_SCRIPT_WEB_APP_URL.trim();
 
   let headerOffset = 120;
